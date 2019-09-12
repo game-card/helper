@@ -1,0 +1,123 @@
+<template>
+<page title="用户设置">
+  <view class="chameleon-content" style="height:{{scrollHeight}}cpx;">
+    <view class="wrapper-search">
+      <text c-bind:tap="goBackClick">返回</text>
+      <text>设置</text>
+      <text></text>
+    </view>
+
+    <view>
+      <button style="margin-top:5cpx;" type="white" text="退出登录" c-bind:onclick="signOut"/>
+    </view>
+  </view>
+</page>
+</template>
+
+<script>
+import cml from "chameleon-api";
+class Setting   {
+
+  data = {
+    searchVal: '',
+    isfocus: true,
+    scrollHeight: -1,
+
+  }
+
+  computed = {
+  }
+
+  methods = {
+    goBackClick(e){
+      cml.navigateBack(-1);
+    },
+    signOut(e){
+      cml.getStorage('token').then((value)=>{
+        cml.get({url:"/api/player/signout",data:{token: value}}).then(res => {
+          cml.removeStorage('token').then(()=>{
+            cml.navigateTo({"path": "/pages/index/index",query:{com:'home'}});
+          },function(err){});
+        })
+      },function(err){});
+    }
+  }
+
+  beforeCreate() {
+  }
+
+  created() {
+
+  }
+
+  beforeMount() {
+  }
+
+  mounted() {
+
+  }
+
+  beforeDestroy() {
+  }
+
+  destroyed() {
+  }
+}
+
+export default new Setting();
+</script>
+
+<style>
+.chameleon-content {
+    width: 750cpx;
+    overflow-x: hidden;
+}
+.wrapper-search{
+    width: 750cpx;
+    height: 84cpx;
+    padding-top: 30cpx;
+    display:flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-around;
+    z-index: 101;
+    background-color: #fafafa;
+    opacity: .99;
+    border-bottom-width: 1cpx;
+    border-bottom-color: #d9d9d9;
+    border-bottom-style: solid;
+    box-sizing: border-box;
+  }
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+      "cinput": "/components/list/cinput",
+      "csearch": "/components/list/csearch",
+      "clist": "/components/home/clist"
+    }
+  },
+  "wx": {
+    "navigationBarTitleText": "index",
+    "backgroundTextStyle": "dark",
+    "backgroundColor": "#E2E2E2"
+  },
+  "alipay": {
+    "defaultTitle": "index",
+    "pullRefresh": false,
+    "allowsBounceVertical": "YES",
+    "titleBarColor": "#ffffff"
+  },
+  "baidu": {
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "index",
+    "backgroundColor": "#ffffff",
+    "backgroundTextStyle": "dark",
+    "enablePullDownRefresh": false,
+    "onReachBottomDistance": 50
+  }
+}
+</script>

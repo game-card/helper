@@ -1,0 +1,154 @@
+<template>
+  <view>
+    <input class="item" style="margin-bottom:5px;margin-top:20px;" placeholder='引荐人' value='{{promoCode}}' c-bind:input="setPromoCode"></input>
+    <view>
+      <input placeholder='手机号' value="{{mobileVal}}" c-bind:blur="checkMobile"></input>
+    </view>
+    <view class="box-captcha">
+        <input class="box-item" placeholder='验证码' value="{{code}}" c-bind:input="setCode"></input>
+        <button  type="white" text="{{btnText}}" disabled="{{isDisable}}" c-bind:onclick="getCAPTCHA"/>  
+    </view>
+    <button class="item" type="orange" text="注册" c-bind:onclick="signUp"/>
+    <button style="margin-top:5px;" size="medium" type="red" text="去登录" c-bind:onclick="goSignIn"/>
+  </view>
+</template>
+
+<script>
+import cml from "chameleon-api";
+class Csignup {
+
+  data = {
+    promoCode: '',
+    mobileVal: '',
+    code: '',
+    btnText: '点击发送',
+    isDisable: false
+  }
+
+  computed = {
+  }
+
+  watch  = {
+  }
+
+  methods = {
+    setPromoCode(e){
+      this.promoCode = e.detail.value;
+    },
+    checkMobile(e){
+      this.mobileVal = e.detail.value;
+      console.log(this.mobileVal)
+      if(!this.mobileVal) return;
+      if(!(/^1[3456789]\d{9}$/.test(this.mobileVal))){ 
+        cml.showToast({
+          message: '手机号有误，请检查',
+          duration: 1000
+        })
+      }
+    },
+    getCAPTCHA(e){
+      if(!this.mobileVal) return;
+      if(!(/^1[3456789]\d{9}$/.test(this.mobileVal))){ 
+        cml.showToast({
+          message: '手机号有误，请检查',
+          duration: 1000
+        })
+        return;
+      }
+      cml.get({url:"/api/player/captcha",data:{mobile:this.mobileVal}}).then(res => {
+        let time = 60
+        this.isDisable = true;
+        let timer = setInterval(() => {
+          if(time <=0 ) {
+            this.btnText = '点击发送';
+            this.isDisable = false;
+            clearInterval(timer)
+            return;
+          }
+          this.btnText = --time + '';
+        }, 1000);
+      })
+    },
+    setCode(e){
+      this.code = e.detail.value;
+    },
+    signUp(e){
+        if(!this.promoCode || !this.mobileVal || !this.code) {
+          cml.showToast({
+            message: '所有项必填',
+            duration: 1000
+          })
+          return;
+        }
+        cml.post({url:"/api/player/signUp",
+          data:{
+            promoCode:this.promoCode,
+            mobile: this.mobileVal,
+            code: this.code
+          }
+        }).then(res => {
+          console.log(res);
+          cml.setStorage('token', res.result).then(()=>{
+            cml.navigateTo({"path": "/pages/index/index"});
+          },function(err){})
+      }, err => {
+        cml.showToast({
+          message: JSON.stringify(err),
+          duration: 2000
+        })
+      })
+    },
+    goSignIn(e){
+      cml.navigateTo({
+        "path": "/pages/user/signin"
+      });
+    }
+  }
+
+  beforeCreate() {
+  }
+
+  created() {
+    this.promoCode = cml.getLaunchOptionsSync().query.code;
+  }
+
+  beforeMount() {
+  }
+
+  mounted() {
+  }
+
+  beforeDestroy() {
+  }
+
+  destroyed() {
+  }
+}
+
+export default new Csignup();
+</script>
+<style>
+.box-captcha{
+  margin-top: 5cpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.box-item{
+  flex: 1;
+  height: 40cpx;
+}
+.item {
+  margin-top: 5cpx;
+}
+</style>
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+      "cswiper":"/components/home/cswiper"
+    }
+  }
+}
+</script>

@@ -1,0 +1,102 @@
+{
+  "mode": "hash",
+  "domain": "http://helper.yuuyoo.com/web/helper.html",
+  "routes":[
+    {
+      "url": "/cml/h5/index",
+      "path": "/pages/index/index",
+      "name": "首页",
+      "mock": "index.php"
+    },
+    {
+      "url": "/cml/h5/search",
+      "path": "/pages/list/list",
+      "name": "平台列表",
+      "mock": "index.php"
+    },
+    {
+      "url": "/cml/h5/conf",
+      "path": "/pages/conf/game",
+      "name": "游戏参数",
+      "mock": "index.php"
+    },
+    {
+      "url": "/cml/h5/tip",
+      "path": "/pages/conf/tip",
+      "name": "匹配提示",
+      "mock": "index.php"
+    },
+    {
+      "url": "/cml/h5/signin",
+      "path": "/pages/user/signin",
+      "name": "登录",
+      "mock": "index.php"
+    },
+    {
+      "url": "/cml/h5/signup",
+      "path": "/pages/user/signup",
+      "name": "注册",
+      "mock": "index.php"
+    },
+    {
+      "url": "/cml/h5/pay",
+      "path": "/pages/pay/pay",
+      "name": "购买/升级会员",
+      "mock": "index.php"
+    },
+    {
+      "url": "/cml/h5/account",
+      "path": "/pages/my/account",
+      "name": "返现帐号",
+      "mock": "index.php"
+    },
+    {
+      "url": "/cml/h5/spread",
+      "path": "/pages/my/spread",
+      "name": "推广页",
+      "mock": "index.php"
+    },
+    {
+      "url": "/cml/h5/follower",
+      "path": "/pages/my/follower",
+      "name": "我的下级",
+      "mock": "index.php"
+    },
+    {
+      "url": "/cml/h5/return",
+      "path": "/pages/my/return",
+      "name": "我的返现",
+      "mock": "index.php"
+    },
+    {
+      "url": "/cml/h5/canReturn",
+      "path": "/pages/my/canReturn",
+      "name": "我的可现",
+      "mock": "index.php"
+    },
+    {
+      "url": "/cml/h5/gamelist",
+      "path": "/pages/my/gamelist",
+      "name": "我的游戏",
+      "mock": "index.php"
+    },
+    {
+      "url": "/cml/h5/setting",
+      "path": "/pages/my/setting",
+      "name": "玩家设置",
+      "mock": "index.php"
+    },
+    {
+      "url": "/cml/h5/message",
+      "path": "/pages/my/message",
+      "name": "我的消息",
+      "mock": "index.php"
+    },
+    {
+      "url": "/cml/h5/appeal",
+      "path": "/pages/my/appeal",
+      "name": "我的申诉",
+      "mock": "index.php"
+    }
+  ]
+}

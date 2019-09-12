@@ -1,0 +1,110 @@
+<template>
+<page title="我的消息">
+  <view class="chameleon-content" style="height:{{scrollHeight}}cpx;">
+    <view class="wrapper-search">
+      <text c-bind:tap="goBackClick">返回</text>
+      <text>我的消息</text>
+      <text></text>
+    </view>
+  </view>
+</page>
+</template>
+
+<script>
+import cml from "chameleon-api";
+class Message   {
+
+  data = {
+    searchVal: '',
+    isfocus: true,
+    scrollHeight: -1,
+
+  }
+
+  computed = {
+  }
+
+  methods = {
+    goBackClick(e){
+      cml.navigateTo({"path": "/pages/my/gamelist:my",query:{com:'my'}});
+    }
+  }
+
+  beforeCreate() {
+  }
+
+  created() {
+
+  }
+
+  beforeMount() {
+  }
+
+  mounted() {
+
+  }
+
+  beforeDestroy() {
+  }
+
+  destroyed() {
+  }
+}
+
+export default new Message();
+</script>
+
+<style>
+.chameleon-content {
+    width: 750cpx;
+    overflow-x: hidden;
+}
+.wrapper-search{
+    width: 750cpx;
+    height: 84cpx;
+    padding-top: 30cpx;
+    display:flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-around;
+    z-index: 101;
+    background-color: #fafafa;
+    opacity: .99;
+    border-bottom-width: 1cpx;
+    border-bottom-color: #d9d9d9;
+    border-bottom-style: solid;
+    box-sizing: border-box;
+  }
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+      "cinput": "/components/list/cinput",
+      "csearch": "/components/list/csearch",
+      "clist": "/components/home/clist"
+    }
+  },
+  "wx": {
+    "navigationBarTitleText": "index",
+    "backgroundTextStyle": "dark",
+    "backgroundColor": "#E2E2E2"
+  },
+  "alipay": {
+    "defaultTitle": "index",
+    "pullRefresh": false,
+    "allowsBounceVertical": "YES",
+    "titleBarColor": "#ffffff"
+  },
+  "baidu": {
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "index",
+    "backgroundColor": "#ffffff",
+    "backgroundTextStyle": "dark",
+    "enablePullDownRefresh": false,
+    "onReachBottomDistance": 50
+  }
+}
+</script>

@@ -1,0 +1,103 @@
+<template>
+<view>
+  <view>
+    <input placeholder='手机号' focus="{{isfocus}}" value='{{mobileVal}}' c-bind:blur="checkMobile"></input>
+  </view>
+  <view class="box-captcha">
+      <input class="item" placeholder='验证码' value='{{code}}'></input>
+      <button  type="white" text="{{btnText}}" c-bind:onclick="getCAPTCHA"/>  
+  </view>
+</view>
+</template>
+  
+<script>
+import cml from "chameleon-api";
+class Cmobile {
+
+  data = {
+    isfocus: true,
+    mobileVal: '',
+    code: '',
+    btnText: '点击发送'
+  }
+
+  computed = {
+  }
+
+  watch  = {
+  }
+
+  methods = {
+    checkMobile(e){
+      console.log(this.mobileVal)
+      console.log(this.code)
+      // if(this.mobile.length == 0) return;
+      if(!(/^1[3456789]\d{9}$/.test(this.mobile))){ 
+        cml.showToast({
+          message: '手机号有误，请检查',
+          duration: 2000
+        })
+      }
+    },
+    getCAPTCHA(e){
+      console.log(this.mobileVal)
+      // if(!this.mobile ||!this.code) return;
+      if(!(/^1[3456789]\d{9}$/.test(this.mobile))){ 
+        cml.showToast({
+          message: '手机号有误，请检查',
+          duration: 2000
+        })
+        // return;
+      }
+      let time = 60
+      setInterval(() => {
+        if(time <=0 ) {
+          this.btnText = '点击发送';
+          return;
+        }
+        this.btnText = --time + '';
+      }, 1000);
+    }
+  }
+
+  beforeCreate() {
+  }
+
+  created() {
+  }
+
+  beforeMount() {
+  }
+
+  mounted() {
+  }
+
+  beforeDestroy() {
+  }
+
+  destroyed() {
+  }
+}
+
+export default new Cmobile();
+</script>
+<style>
+.box-captcha{
+  margin-top: 5cpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.item{
+  flex: 1;
+  height: 40cpx;
+}
+</style>
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {}
+  }
+}
+</script>

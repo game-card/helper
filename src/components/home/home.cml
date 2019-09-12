@@ -1,0 +1,66 @@
+<template>
+  <view class="wrapper-home">
+    <header></header>
+    <cswiper></cswiper>
+    <clist></clist>
+  </view>
+</template>
+
+<script>
+
+class Home {
+
+  data = {
+  }
+
+  computed = {
+  }
+
+  watch  = {
+  }
+
+  methods = {
+  }
+
+  beforeCreate() {
+  }
+
+  created() {
+  }
+
+  beforeMount() {
+  }
+
+  mounted() {
+  }
+
+  beforeDestroy() {
+  }
+
+  destroyed() {
+  }
+}
+
+export default new Home();
+</script>
+<style>
+.wrapper-home {
+    /* width: 600cpx; */
+    /*height: 1000cpx;*/
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    background-color: #fff;
+  }
+</style>
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+      "header": "/components/common/header",
+      "cswiper": "/components/home/cswiper",
+      "clist": "/components/home/clist"
+    }
+  }
+}
+</script>

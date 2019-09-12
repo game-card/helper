@@ -1,0 +1,127 @@
+<template>
+  <view class="chameleon-content" style="height:{{scrollHeight}}cpx;">
+      <view class="wrapper-search" >
+        <text c-bind:tap="goBackClick">返回</text>
+        <text>参数设置</text>
+        <text></text>
+      </view>
+      <scroller
+        scroll-direction="vertical"
+        bottom-offset="{{20}}"
+        height="{{scrollHeight}}"
+      >
+        <cgame></cgame>
+      </scroller>
+    </view>
+  
+</template>
+
+<script>
+import cml from "chameleon-api";
+class Game   {
+
+  data = {
+    scrollHeight: -1,
+  }
+
+  computed = {
+  }
+
+  watch  = {
+  }
+
+  methods = {
+    goBackClick(e){
+      cml.navigateTo({"path": "/pages/h5/index",query:{com:'home'}});
+    }
+  }
+
+  beforeCreate() {
+    
+  }
+
+  created() {
+    // cml.getStorage('token').then((value)=>{
+    //   if(!value){
+    //     cml.navigateTo({"path": "/pages/user/signin"});
+    //   }
+    // })
+  }
+
+  beforeMount() {
+  }
+
+  mounted() {
+    cml.getSystemInfo().then((info) => {
+        if (info.env == 'weex') {
+          this.scrollHeight = Number(info.viewportHeight) - 88;
+        } else {
+          this.scrollHeight = Number(info.viewportHeight);
+        }
+      })
+  }
+
+  beforeDestroy() {
+  }
+
+  destroyed() {
+  }
+}
+
+export default new Game();
+</script>
+
+<style>
+.wrapper-search{
+    width: 750cpx;
+    height: 84cpx;
+    padding-top: 30cpx;
+    display:flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-around;
+    z-index: 101;
+    background-color: #fafafa;
+    opacity: .99;
+    border-bottom-width: 1cpx;
+    border-bottom-color: #d9d9d9;
+    border-bottom-style: solid;
+    box-sizing: border-box;
+  }
+.chameleon-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  }
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+      "cgame":"/components/conf/cgame"
+    }
+  },
+  "wx": {
+    "navigationBarTitleText": "index",
+    "backgroundTextStyle": "dark",
+    "backgroundColor": "#E2E2E2"
+  },
+  "alipay": {
+    "defaultTitle": "index",
+    "pullRefresh": false,
+    "allowsBounceVertical": "YES",
+    "titleBarColor": "#ffffff"
+  },
+  "baidu": {
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "index",
+    "backgroundColor": "#ffffff",
+    "backgroundTextStyle": "dark",
+    "enablePullDownRefresh": false,
+    "onReachBottomDistance": 50
+  }
+}
+</script>

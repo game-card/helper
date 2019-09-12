@@ -1,0 +1,230 @@
+<template>
+<page title="平台列表">
+  <view class="wrapper-search" c-if="{{notWeex}}">
+    <text c-bind:tap="goBackClick">返回</text>
+    <text>搜索</text>
+    <text></text>
+  </view>
+  <view slot="titlebar" class="titlebar">
+      <text class="titlebar-text">自定义标题</text>
+  </view>
+  <scroller
+        scroll-direction="vertical"
+        bottom-offset="{{20}}"
+        height="{{scrollHeight}}"
+      >
+    <view class="search-input">
+      <input placeholder='请输入你的用户名'
+        value='{{searchVal}}'
+       c-bind:input="inputEvent"></input>
+    </view>
+    
+    <view class="main-list" style="{{scrollerHeight}}cpx">
+    <text class="sub-tlt"> --- 游戏列表 --- </text>
+    <view class="sub-box">
+        <view class="sub-i" c-for="{{subclasses}}">
+          <view c-bind:tap="goConf({item},$event)">
+            <image class="i-img" resize="contain" src="{{item.icon}}"></image>
+            <text class="i-name">{{item.name}}</text>
+          </view>
+        </view>
+    </view>
+    </view>
+  </scroller>
+</page>
+</template>
+
+<script>
+import cml from "chameleon-api";
+import yanxuanData from '../../assets/json/yanxuan.json'
+const headerHeight = 114;
+const tabbarHeight = 90;
+class List   {
+
+  data = {
+    searchVal: '',
+    isfocus: true,
+    scrollHeight: -1,
+    classes: [],
+    subclasses : [],
+    scrollerHeight: -1,
+    notWeex: true
+  }
+
+  computed = {
+  }
+
+  methods = {
+    goBackClick(e){
+      cml.navigateBack(-1);
+    },
+    goConf(data,e){
+
+        cml.getStorage('token').then((value)=>{
+          console.log(value);
+          
+          if(value){
+            cml.navigateTo({
+              "path": "/pages/conf/game",
+              query: {
+                name: data.item.name
+              }
+            });
+          }else{
+            cml.navigateTo({
+              "path": "/pages/user/signin"
+            });
+          }
+        },function(err){})
+    },
+    inputEvent(e){
+      this.searchKey = e.detail.value.trim();
+      // console.log(yanxuanData.data.result.subclasses)
+      if(this.searchKey == ''){
+        this.subclasses = yanxuanData.data.result.subclasses
+      }else{
+        this.subclasses = yanxuanData.data.result.subclasses.filter(item => (item.name.startsWith(this.searchKey)))
+      }
+      
+    }
+  }
+
+  beforeCreate() {
+  }
+
+  created() {
+    // let result = yanxuanData.data.result;
+    // this.classes = result.classes;
+    // this.subclasses = result.subclasses;
+
+    cml.get({url:"/api/game/online"}).then(res => {
+        console.log(res)
+        this.subclasses = res.result;
+      }, err => {
+        cml.showToast({
+          message: JSON.stringify(err),
+          duration: 2000
+        })
+      })
+  }
+
+  beforeMount() {
+  }
+
+  mounted() {
+    cml.getSystemInfo().then((info) => {
+        if (info.env == 'weex') {
+          this.notWeex = false;
+          this.scrollHeight = Number(info.viewportHeight) - 88;
+        } else {
+          this.notWeex = true;
+          this.scrollHeight = Number(info.viewportHeight);
+        }
+      })
+  }
+
+  beforeDestroy() {
+  }
+
+  destroyed() {
+  }
+}
+
+export default new List();
+</script>
+
+<style>
+.wrapper-search{
+    width: 750cpx;
+    height: 84cpx;
+    padding-top: 30cpx;
+    display:flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-around;
+    z-index: 101;
+    background-color: #fafafa;
+    opacity: .99;
+    border-bottom-width: 1cpx;
+    border-bottom-color: #d9d9d9;
+    border-bottom-style: solid;
+    box-sizing: border-box;
+  }
+.search-input {
+    flex: 1;
+    height: 70cpx;
+    font-size: 26cpx;
+    line-height: 70cpx;
+    background-color: #ededed;
+    border-radius: 8cpx;
+    margin-top: 26cpx;
+    margin-right: 26cpx;
+    margin-left: 26cpx;
+    text-align: center;
+    color:#666;
+  } 
+
+.sub-tlt{
+    display:block;
+    text-align: center;
+    font-size: 24cpx;
+    color:#333;
+    margin-top: 50cpx;
+    margin-bottom: 30cpx;
+  }
+  .sub-box{
+    padding-left: 26cpx;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 100cpx;
+  }
+  .sub-i{
+    display:flex;
+    flex-direction:column;
+    width: 178cpx;
+    height: 200cpx;
+  }
+  .i-img{
+    width: 150cpx;
+    margin-left: 14cpx;
+    margin-right: 14cpx;
+    height: 150cpx;
+  }
+  .i-name{
+    font-size: 22cpx;
+    text-align: center;
+  } 
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+      "cinput": "/components/list/cinput",
+      "csearch": "/components/list/csearch",
+      "clist": "/components/home/clist"
+    }
+  },
+  "wx": {
+    "navigationBarTitleText": "index",
+    "backgroundTextStyle": "dark",
+    "backgroundColor": "#E2E2E2"
+  },
+  "alipay": {
+    "defaultTitle": "index",
+    "pullRefresh": false,
+    "allowsBounceVertical": "YES",
+    "titleBarColor": "#ffffff"
+  },
+  "baidu": {
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "index",
+    "backgroundColor": "#ffffff",
+    "backgroundTextStyle": "dark",
+    "enablePullDownRefresh": false,
+    "onReachBottomDistance": 50
+  }
+}
+</script>

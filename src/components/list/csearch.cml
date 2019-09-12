@@ -1,0 +1,77 @@
+<template>
+  <view class="wrapper-search" >
+    <text c-bind:tap="goBackClick">返回</text>
+    <text>搜索</text>
+    <text></text>
+  </view>
+</template>
+
+<script>
+import cml from "chameleon-api";
+
+class Csearch {
+  
+  data = {
+  }
+
+  computed = {
+  }
+
+  watch  = {
+  }
+
+  methods = {
+    goBackClick(e){
+      console.log('go back clicked')
+      cml.navigateBack(-1);
+    }
+  }
+
+  beforeCreate() {
+  }
+
+  created() {
+  }
+
+  beforeMount() {
+  }
+
+  mounted() {
+  }
+
+  beforeDestroy() {
+  }
+
+  destroyed() {
+  }
+}
+
+export default new Csearch();
+</script>
+<style>
+.wrapper-search{
+    width: 750cpx;
+    height: 84cpx;
+    padding-top: 30cpx;
+    display:flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-around;
+    z-index: 101;
+    background-color: #fafafa;
+    opacity: .99;
+    border-bottom-width: 1cpx;
+    border-bottom-color: #d9d9d9;
+    border-bottom-style: solid;
+    box-sizing: border-box;
+  }
+</style>
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+      "clist": "/components/home/clist"
+    }
+  }
+}
+</script>

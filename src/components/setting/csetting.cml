@@ -1,0 +1,214 @@
+<template>
+  <view class="setting-content">
+    <view class="setting-item">
+      <text class="setting-item-left">选择平台</text>
+      <input class="setting-item-right"
+        value="{{platformVal}}"
+       c-bind:focus="platformChoice"></input>
+      <c-actionsheet
+      show="{{isShowAs}}"
+      title="{{asTitle}}"
+      list="{{asList}}"
+      active="{{0}}"
+      cancel-txt="取消"
+      c-bind:select="onActionSheetSelect"
+      c-bind:cancel="onActionSheetCancel"
+      ></c-actionsheet>
+    </view>
+    <view class="setting-item">
+      <text class="setting-item-left"> 连接 ID </text>
+      <input class="setting-item-right" c-bind:input="idInput"></input>
+    </view>
+    <view class="setting-item">
+      <text class="setting-item-left">透视三家牌</text>
+      <switch class="setting-item-right"
+        opencolor='#FF7F00'
+        checked="{{ isSeeOthers }}"
+        c-bind:change="switchSeeOthers"
+        >
+      </switch>
+    </view>
+    <view class="setting-item">
+      <text> 起手暗杠 </text>
+      <switch
+        opencolor='#FF7F00'
+        checked="{{ isSeeOthers }}"
+        c-bind:change="switchSeeOthers"
+        >
+      </switch>
+    </view>
+    <view class="setting-item">
+      <text> 快速成型 </text>
+      <switch
+        opencolor='#FF7F00'
+        checked="{{ isSeeOthers }}"
+        c-bind:change="switchSeeOthers"
+        >
+      </switch>
+    </view>
+    <view class="setting-item">
+      <text> 快速自摸 </text>
+      <switch
+        opencolor='#FF7F00'
+        checked="{{ isSeeOthers }}"
+        c-bind:change="switchSeeOthers"
+        >
+      </switch>
+    </view>
+    <view class="setting-item">
+      <text> 智能出牌 </text>
+      <switch
+        opencolor='#FF7F00'
+        checked="{{ isSeeOthers }}"
+        c-bind:change="switchSeeOthers"
+        >
+      </switch>
+    </view>
+    <view class="setting-item">
+      <text>防点炮 </text>
+      <switch
+        opencolor='#FF7F00'
+        checked="{{ isSeeOthers }}"
+        c-bind:change="switchSeeOthers"
+        >
+      </switch>
+    </view>
+    <view class="setting-item">
+      <text> 防 杠 </text>
+      <switch
+        opencolor='#FF7F00'
+        checked="{{ isSeeOthers }}"
+        c-bind:change="switchSeeOthers"
+        >
+      </switch>
+    </view>
+    <view class="setting-item">
+      <text> 随意选牌</text>
+      <switch
+        opencolor='#FF7F00'
+        checked="{{ isSeeOthers }}"
+        c-bind:change="switchSeeOthers"
+        >
+      </switch>
+    </view>
+    <view class="setting-item">
+      <text> 好牌类型</text>
+      <switch
+        opencolor='#FF7F00'
+        checked="{{ isSeeOthers }}"
+        c-bind:change="switchSeeOthers"
+        >
+      </switch>
+    </view>
+    <view class="setting-item">
+      <text> 自模机率</text>
+      <switch
+        opencolor='#FF7F00'
+        checked="{{ isSeeOthers }}"
+        c-bind:change="switchSeeOthers"
+        >
+      </switch>
+    </view>
+      <button
+        type="orange"
+        text="启动游戏"
+        c-bind:onclick="startGame"
+      >  
+      </button>
+  </view>
+</template>
+
+<script>
+import cml from "chameleon-api";
+class Csetting {
+
+  data = {
+    platformVal: '',
+    isSeeOthers: true,
+    isShowAs: false,
+    asTitle: '选择平台',
+    asList: ['皮皮麻将','欢乐麻将','熊猫麻将']
+  }
+
+  computed = {
+  }
+
+  watch  = {
+  }
+
+  methods = {
+    platformChoice(e){
+      this.isShowAs = true
+    },
+    onActionSheetSelect(e){
+      this.platformVal = e.detail.value
+      this.isShowAs = false
+    },
+    onActionSheetCancel(e){
+      this.isShowAs = false
+    },
+    idInput(e){
+
+    },
+    switchSeeOthers(e){
+      this.isSeeOthers = !this.isSeeOthers
+    },
+    startGame(e){
+      cml.getSystemInfo().then(info => {
+        
+      })
+      cml.close();
+    }
+  }
+
+  beforeCreate() {
+  }
+
+  created() {
+    console.log(cml.getLaunchOptionsSync().query.name)
+    this.platformVal = cml.getLaunchOptionsSync().query.name;
+  }
+
+  beforeMount() {
+  }
+
+  mounted() {
+  }
+
+  beforeDestroy() {
+  }
+
+  destroyed() {
+  }
+}
+
+export default new Csetting();
+</script>
+<style>
+.setting-content{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.setting-item{
+  margin-top:5cpx;
+  display: flex;
+  flex-direction: row; 
+  align-items: center;
+}
+.setting-item-left{
+  margin-right:5cpx;
+}
+.setting-item-right{
+}
+</style>
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+      "c-actionsheet": "cml-ui/components/c-actionsheet/c-actionsheet"
+    }
+  }
+}
+</script>

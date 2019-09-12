@@ -1,0 +1,130 @@
+<template>
+    <view class="main-list" style="{{scrollerHeight}}cpx">
+    <text class="sub-tlt"> --- 游戏列表 --- </text>
+    <view class="sub-box">
+        <view class="sub-i" c-for="{{subclasses}}" c-bind:tap="goConf({item},$event)">
+        <image class="i-img" resize="contain" src="{{item.icon}}"></image>
+        <text class="i-name">{{item.name}}</text>
+        </view>
+    </view>
+    </view>
+</template>
+<script>
+  import cml from "chameleon-api";
+  import yanxuanData from '../../assets/json/yanxuan.json'
+  const headerHeight = 114;
+  const tabbarHeight = 90;
+  class Clist   {
+    props = {
+      searchKey:{
+        type: String,
+        default: ''
+      }
+    }
+    data = {
+      classes: [],
+      subclasses : [],
+      scrollerHeight: -1
+    }
+    methods = {
+      goConf(data,e){
+        cml.getStorage('token').then((value)=>{
+          console.log(value);
+          
+          if(value){
+            cml.navigateTo({
+              "path": "/pages/conf/game",
+              query: {
+                name: data.item.name
+              }
+            });
+          }else{
+            cml.navigateTo({
+              "path": "/pages/user/signin"
+            });
+          }
+        },function(err){
+
+        })
+      },
+      forbinding(e){
+        // e.stopPropagation();
+      }
+    }
+
+    watch  = {
+      searchKey : function (newV, oldV) {
+        console.log(newV)
+      }
+    }
+
+    created() {
+      // let result = yanxuanData.data.result;
+      // this.classes = result.classes;
+      // this.subclasses = result.subclasses;
+      // console.log(this.searchKey)
+      cml.get({url:"/api/game/online"}).then(res => {
+        console.log(res)
+        this.subclasses = res.result;
+      }, err => {
+        cml.showToast({
+          message: JSON.stringify(err),
+          duration: 2000
+        })
+      })
+    }
+
+    mounted() {
+      cml.getSystemInfo().then((info)=>{
+        this.scrollerHeight = Number(info.viewportHeight) - headerHeight - tabbarHeight
+      })
+    }
+  }
+
+  export default new Clist();
+</script>
+<style scoped>
+  .main-list{
+    /* width: 600cpx; */
+    /*height: 1000cpx;*/
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    background-color: #fff;
+  }
+  .sub-tlt{
+    display:block;
+    text-align: center;
+    font-size: 24cpx;
+    color:#333;
+    margin-top: 50cpx;
+    margin-bottom: 30cpx;
+  }
+  .sub-box{
+    padding-left: 26cpx;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 50cpx;
+  }
+  .sub-i{
+    display:flex;
+    flex-direction:column;
+    width: 178cpx;
+    height: 200cpx;
+  }
+  .i-img{
+    width: 150cpx;
+    margin-left: 14cpx;
+    margin-right: 14cpx;
+    height: 150cpx;
+  }
+  .i-name{
+    font-size: 22cpx;
+    text-align: center;
+  }
+</style>
+<script cml-type="json">
+  {
+  }
+</script>

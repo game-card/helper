@@ -1,0 +1,412 @@
+<template>
+  <view class="setting-content">
+    <view class="setting-item">
+      <text class="setting-item-left">选择平台</text>
+      <input class="setting-item-right"
+        value="{{platformVal}}"
+       c-bind:focus="gameChoice"></input>
+      
+      <c-picker
+            c-if="{{pickerShow}}"
+            show="{{pickerShow}}"
+            height="{{500}}"
+            header-height="{{100}}"
+            text-align="center"
+            data-scroller-height="{{400}}"
+            list="{{asList}}"
+            default-index="{{defaultIndex}}"
+            confirm-btn-style="color:red"
+            cancel-btn-style="color:red"
+            c-bind:cancel="cancel"
+            c-bind:confirm="confirm"
+            c-bind:selectchange="selectchange">
+        </c-picker>
+
+      <c-dialog  show="{{dg_show}}"
+        type="{{dg_type}}"
+        title="{{dg_title}}"
+        mask="{{dg_mask}}"
+        content="{{dg_content}}"
+        show-close="{{dg_showClose}}"
+        icon-type="{{dg_iconType}}"
+        icon-style="{{dg_iconStyle}}"
+        c-bind:confirm="confirmEvent"
+        c-bind:cancel="cancelEvent"
+      >
+      </c-dialog>
+    </view>
+    <view class="setting-item">
+      <text class="setting-item-left"> 连接 ID </text>
+      <input class="setting-item-right" value="{{idVal}}" c-bind:blur="idInput"></input>
+    </view>
+    <view class="setting-item">
+      <text class="setting-item-left">透视三家牌</text>
+      <switch class="setting-item-right"
+        opencolor='#FF7F00'
+        checked="{{ isSeeOthers }}"
+        c-bind:change="switchSeeOthers"
+        >
+      </switch>
+    </view>
+    <view class="setting-item">
+      <text> 起手暗杠 </text>
+      <switch
+        opencolor='#FF7F00'
+        checked="{{ isGang }}"
+        c-bind:change="switchIsGang"
+        >
+      </switch>
+    </view>
+    <view class="setting-item">
+      <text> 快速成型 </text>
+      <switch
+        opencolor='#FF7F00'
+        checked="{{ isFast }}"
+        c-bind:change="switchIsFast"
+        >
+      </switch>
+    </view>
+    <view class="setting-item">
+      <text> 快速自摸 </text>
+      <switch
+        opencolor='#FF7F00'
+        checked="{{ isFastDone }}"
+        c-bind:change="switchIsFastDone"
+        >
+      </switch>
+    </view>
+    <view class="setting-item">
+      <text> 智能出牌 </text>
+      <switch
+        opencolor='#FF7F00'
+        checked="{{ isAuto }}"
+        c-bind:change="switchIsAuto"
+        >
+      </switch>
+    </view>
+    <view class="setting-item">
+      <text>防点炮 </text>
+      <switch
+        opencolor='#FF7F00'
+        checked="{{ isDefensePao }}"
+        c-bind:change="switchIsDefensePao"
+        >
+      </switch>
+    </view>
+    <view class="setting-item">
+      <text> 防 杠 </text>
+      <switch
+        opencolor='#FF7F00'
+        checked="{{ isDefenseGang }}"
+        c-bind:change="switchIsDefenseGang"
+        >
+      </switch>
+    </view>
+    <!--
+    <view class="setting-item">
+      <text> 随意选牌</text>
+      <switch
+        opencolor='#FF7F00'
+        checked="{{ isWillCard }}"
+        c-bind:change="switchSeeOthers"
+        >
+      </switch>
+    </view>
+    -->
+    <view class="setting-item">
+      <text> 好牌类型 </text>
+      <input class="setting-item-right"
+        value="{{cardType}}"
+       c-bind:focus="cardTypeChoice"></input>
+      <c-actionsheet
+        show="{{as_show}}"
+        title="{{as_title}}"
+        list="{{as_list}}"
+        active="{{0}}"
+        c-bind:cancel="cancelAs"
+        c-bind:select="selectAs"
+        cancel-txt="取消"></c-actionsheet>
+    </view>
+    <view class="setting-item">
+      <text> 自模机率 </text>
+      <input class="setting-item-right"
+        value="{{zmRate}}" c-bind:blur="zmRateInput"></input>
+    </view>
+      <button
+        type="orange"
+        text="启动游戏"
+        c-bind:onclick="startGame"
+      >  
+      </button>
+  </view>
+</template>
+
+<script>
+import cml from "chameleon-api";
+class Cgame {
+
+  data = {
+    defaultIndex: 0,
+    provinsIndex: 0,
+    pickerShow: false,
+    scrollHeight: -1,
+    platformVal: '',
+    isSeeOthers: true,
+    // pickerShow: false,
+    asTitle: '选择平台',
+    asList: ['皮皮麻将','欢乐麻将','熊猫麻将'],
+    gameList: [],
+
+    dg_type : "confirm",
+    dg_title : "提示",
+    dg_content : "",
+    dg_iconType : "",
+    dg_mask : false,
+    dg_showClose : false,
+    dg_show : false,
+    dg_iconStyle: {
+      width: "60cpx",
+      height: "60cpx"
+    },
+
+    as_show: false,
+    as_title: '选择牌型',
+    as_list: ['随意','五对','三靠','一杠','二杠','清一色'],
+
+    idVal: '',
+    isGang: false,
+    isAuto: false,
+    isFast: false,
+    isFastDone: false,
+    isDefenseGang: false,
+    isDefensePao: false,
+    isWillCard: false,
+    cardType: '',
+    zmRate: '50',
+
+    jump: ''
+  }
+
+  computed = {
+  }
+
+  watch  = {
+  }
+
+  methods = {
+    selectchange(e) {
+      this.provinsIndex = this.defaultIndex = e.detail.index;
+      console.log(e.detail.index)
+    },
+    showClick() {
+      this.pickerShow = true;
+    },
+    cancel() {
+      this.pickerShow = false;
+    },
+    confirm() {
+      this.pickerShow = false;
+      this.platformVal = this.asList[this.provinsIndex];
+    },
+    gameChoice(e){
+      this.pickerShow = true
+    },
+    confirmEvent() {
+      this.dg_show = false;
+      if(this.jump == 'addGame'){
+        cml.getStorage('token').then((value)=>{
+          cml.post({url:"/api/player/gameAdd",data:{token: value}}).then(res => {
+            if(res.code != '200'){
+              this.jump = 'toPay';
+            }else{
+              this.jump = '';
+            }
+            this.dg_mask = true;
+            this.dg_content = res.message;
+            this.dg_show = true;
+          },function(err){})
+        },function(err){})
+      }
+      if(this.jump == "toPay"){
+        cml.navigateTo({"path": "/pages/pay/pay"});
+      }
+      if(this.jump == "totip"){
+        cml.navigateTo({"path": "/pages/conf/tip"});
+      }
+    },
+    cancelEvent() {
+      this.dg_show = false;
+      if(this.jump == "totip"){
+        cml.navigateTo({"path": "/pages/conf/tip"});
+      }
+      this.jump= '';
+    },
+    idInput(e){
+      this.idVal = e.detail.value
+    },
+
+
+    switchSeeOthers(e){
+      this.isSeeOthers = !this.isSeeOthers
+    },
+    switchIsGang(e){
+      this.isGang = !this.isGang
+    },
+    switchIsFast(e){
+      this.isFast = !this.isFast
+    },
+    switchIsFastDone(e){
+      this.isFastDone = !this.isFastDone
+    },
+    switchIsAuto(e){
+      this.isAuto = ! this.isAuto
+    },
+    switchIsDefensePao(e){
+      this.isDefensePao = ! this.isDefensePao
+    },
+    switchIsDefenseGang(e){
+      this.isDefenseGang = ! this.isDefenseGang
+    },
+    zmRateInput(e){
+      this.zmRate = e.detail.value
+      if(!(/^(?:0|[1-9][0-9]?|100)$/.test(this.zmRate))){
+        cml.showToast({
+          message: JSON.stringify("只能填1到100的整数"),
+          duration: 2000
+        })
+      }
+    },
+
+
+    cardTypeChoice(e){
+      this.as_show = true;
+    },
+    cancelAs(e){
+      this.as_show = false;
+    },
+    selectAs(e){
+      this.cardType = e.detail.value;
+      this.as_show = false;
+    },
+    startGame(e){
+      if(this.idVal.length == 0){
+        cml.showToast({
+          message: JSON.stringify("游戏ID必填"),
+          duration: 2000
+        })
+        return;
+      }
+      if(this.cardType.length == 0){
+        cml.showToast({
+          message: JSON.stringify("好牌类型必选"),
+          duration: 2000
+        })
+        return;
+      }
+      if(!(/^(?:0|[1-9][0-9]?|100)$/.test(this.zmRate))){
+        cml.showToast({
+          message: JSON.stringify("只能填1到100的整数"),
+          duration: 2000
+        })
+        return;
+      }
+
+      cml.getStorage('token').then((value)=>{
+          console.log(value);
+
+          // if(value){
+          cml.post({url:"/api/game/conf",data:{token: value}}).then(res => {
+            if(res.code != '200'){
+              this.jump = 'addGame';
+              // cml.navigateTo({"path": "/pages/pay/pay"});
+            }else{
+              console.log('设置成功，请启动游戏')
+              //cml.close();
+              this.jump = 'totip';
+            }
+            this.dg_mask = true;
+            this.dg_content = res.message;
+            this.dg_show = true;
+          })
+          // }else{
+          //   cml.navigateTo({"path": "/pages/user/signin"});
+          // }
+    },function(err){})
+  }
+  }
+
+  beforeCreate() {
+  }
+
+  created() {
+    console.log(cml.getLaunchOptionsSync().query.name)
+    this.platformVal = cml.getLaunchOptionsSync().query.name;
+
+    cml.get({url:"/api/game/online"}).then(res => {
+        console.log(res)
+        this.asList.length = 0;
+        this.gameList = res.result;
+        for(let i=0;i<this.gameList.length;i++){
+          let name = this.gameList[i].name;
+          this.asList.push(name)
+        }
+      }, err => {
+        cml.showToast({
+          message: JSON.stringify(err),
+          duration: 2000
+        })
+      })
+  }
+
+  beforeMount() {
+  }
+
+  mounted() {
+    cml.getSystemInfo().then((info) => {
+        if (info.env == 'weex') {
+          this.scrollHeight = Number(info.viewportHeight) - 88;
+        } else {
+          this.scrollHeight = Number(info.viewportHeight);
+        }
+      })
+  }
+
+  beforeDestroy() {
+  }
+
+  destroyed() {
+  }
+}
+
+export default new Cgame();
+</script>
+<style>
+.setting-content{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.setting-item{
+  margin-top:5cpx;
+  display: flex;
+  flex-direction: row; 
+  align-items: center;
+}
+.setting-item-left{
+  margin-right:5cpx;
+}
+.setting-item-right{
+}
+</style>
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+      "c-picker": "cml-ui/components/c-picker/c-picker",
+      "c-dialog": "cml-ui/components/c-dialog/c-dialog",
+      "c-actionsheet": "cml-ui/components/c-actionsheet/c-actionsheet"
+    }
+  }
+}
+</script>

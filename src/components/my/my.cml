@@ -1,0 +1,286 @@
+<template>
+  <view class="wrapper">
+    <image ref="headerBg" class="header-bg" resize="cover" src="https://cmljs.org/cml-demo/src/assets/images/yanxuan/bg5.png"></image>
+    <scroller height="{{scrollerHeight}}">
+      <view class="header">
+        <image class="i-photo" resize="cover" src="{{headerImg}}"></image>
+        <text class="i-name">{{nick_name}}</text>
+        <view class="b-tlt">
+          <image class="i-tag tag-e" resize="contain" src="https://cmljs.org/cml-demo/src/assets/images/yanxuan/3dc6e876620bb84a5dac3deb6ecd4916.png"></image>
+          <text class="i-tag tag-v8 iconfont">&#xe6cc;</text>
+          <text class="txt-tag">{{member_name}}</text>
+        </view>
+      </view>
+      <view class="fbs">
+        <view class="s-box cell-button">
+          <view class="box-tlt border-bottom"><text class="box-txt">我的返现</text></view>
+          <view class="box-line">
+            <view class="i-box-l" c-bind:tap="goReturnAtCan">
+              <image class="chameleo-logo" src="{{headerImg}}"></image>
+              <text class="i-box-tlt">可返现</text>
+            </view>
+            <view class="i-box-l" c-bind:tap="goReturnAtApplyed">
+              <image class="chameleo-logo" src="{{headerImg}}"></image>
+              <text class="i-box-tlt">已申请</text>
+            </view>
+            <view class="i-box-l" c-bind:tap="goReturnAtChecked">
+              <image class="chameleo-logo" src="{{headerImg}}"></image>
+              <text class="i-box-tlt">已审核</text>
+            </view>
+            <view class="i-box-l" c-bind:tap="goReturnAtDone">
+              <image class="chameleo-logo" src="{{headerImg}}"></image>
+              <text class="i-box-tlt">已到帐</text>
+            </view>
+            <view class="i-box-l" c-bind:tap="goReturnAll">
+              <image class="chameleo-logo" src="{{headerImg}}"></image>
+              <text class="i-box-tlt">全部</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="s-box cell-button">
+          <view class="box-member">
+            <button class="item-member" type="white" text="会员购买" c-bind:onclick="goPay"/>
+            <button class="item-member" type="white" text="会员升级" c-bind:onclick="goPay"/>
+          </view>
+      </view>
+
+      <view class="s-box cell-button">
+        <view class="box-tlt border-bottom"><text class="box-txt">我的服务</text></view>
+        <view class="box-line line-serve border-bottom">
+          <view class="i-box-l" c-bind:tap="goSpread"><image class="chameleo-logo" src="{{headerImg}}"></image><text class="i-box-tlt">推广页</text></view>
+          <view class="i-box-l" c-bind:tap="goFollower"><image class="chameleo-logo" src="{{headerImg}}"></image><text class="i-box-tlt">推广成绩</text></view>
+          <view class="i-box-l" c-bind:tap="goReturnAll"><image class="chameleo-logo" src="{{headerImg}}"></image><text class="i-box-tlt">我的返现</text></view>
+          <view class="i-box-l" c-bind:tap="goAccount"><image class="chameleo-logo" src="{{headerImg}}"></image><text class="i-box-tlt">返现帐号</text></view>
+        </view>
+
+        <view class="box-line line-serve border-bottom">
+          <view class="i-box-l" c-bind:tap="goGameList"><image class="chameleo-logo" src="{{headerImg}}"></image><text class="i-box-tlt">我的游戏</text></view>
+          <view class="i-box-l" c-bind:tap="goSetting"><image class="chameleo-logo" src="{{headerImg}}"></image><text class="i-box-tlt">设置</text></view>
+          <view class="i-box-l" c-bind:tap="goMessage"><image class="chameleo-logo" src="{{headerImg}}"></image><text class="i-box-tlt">我的消息</text></view>
+          <view class="i-box-l" c-bind:tap="goAppeal"><image class="chameleo-logo" src="{{headerImg}}"></image><text class="i-box-tlt">申诉</text></view>
+        </view>
+      </view>
+    </scroller>
+  </view>
+</template>
+<script>
+  import cml from "chameleon-api";
+  const tabbarHeight = 90;
+  class My   {
+
+    data = {
+      classes: [],
+      subclasses : [],
+      scrollerHeight: -1,
+      headerImg: require('../../assets/images/chameleon.png'),
+      nick_name: '大师兄',
+      member_name: '普通会员'
+    }
+
+    methods = {
+      goReturnAtCan(e){this.checkSignIn(()=>{cml.navigateTo({"path": "/pages/my/canReturn"});})},
+      goReturnAtApplyed(e){this.checkSignIn(()=>{cml.navigateTo({"path": "/pages/my/return"});})},
+      goReturnAtChecked(e){this.checkSignIn(()=>{cml.navigateTo({"path": "/pages/my/return"});})},
+      goReturnAtDone(e){this.checkSignIn(()=>{cml.navigateTo({"path": "/pages/my/return"});})},
+      goReturnAll(e){this.checkSignIn(()=>{cml.navigateTo({"path": "/pages/my/return"});})},
+      goSpread(e){this.checkSignIn(()=>{cml.navigateTo({"path": "/pages/my/spread"});})},
+      goFollower(e){this.checkSignIn(()=>{cml.navigateTo({"path": "/pages/my/follower"});})},
+      goReturnAll(e){this.checkSignIn(()=>{cml.navigateTo({"path": "/pages/my/return"});})},
+      goAccount(e){this.checkSignIn(()=>{cml.navigateTo({"path": "/pages/my/account"});})},
+      goGameList(e){this.checkSignIn(()=>{cml.navigateTo({"path": "/pages/my/gamelist"});})},
+      goMessage(e){this.checkSignIn(()=>{cml.navigateTo({"path": "/pages/my/message"});})},
+      goSetting(e){this.checkSignIn(()=>{cml.navigateTo({"path": "/pages/my/setting"});})},
+      goAppeal(e){this.checkSignIn(()=>{cml.navigateTo({"path": "/pages/my/appeal"});})},
+      goPay(e){this.checkSignIn(()=>{cml.navigateTo({"path": "/pages/pay/pay"});})},
+      checkSignIn(cb){
+        cml.getStorage('token').then((value)=>{
+          if(!value){
+            cml.navigateTo({"path": "/pages/user/signin"});
+          }else{
+            cb();
+          }
+        })
+      }
+    }
+
+    mounted() {
+      cml.getSystemInfo().then((info)=>{
+        this.scrollerHeight = Number(info.viewportHeight) - tabbarHeight
+      })
+
+      cml.getStorage('userinfo').then((value)=>{
+        console.log(value)
+        // let userInfo = JSON.parse(value);
+        this.nick_name = value.name;
+        if(value.lever == 0){
+          this.member_name = "普通会员";
+        }else if(value.lever == 1){
+          this.member_name = "白银会员";
+        }else if(value.lever == 2){
+          this.member_name = "黄金会员";
+        }else if(value.lever == 3){
+          this.member_name = "钻石会员";
+        }
+      })
+    }
+
+  }
+
+  export default new My();
+</script>
+<style scoped>
+  .iconfont {
+    font-family:iconfont;
+  }
+  .wrapper-my{
+    background-color: #f4f4f4;
+  }
+  .fbs{
+    position:relative;
+    background-color: #f4f4f4;
+  }
+  .chameleo-logo {
+    width: 50cpx;
+    height: 50cpx;
+    margin-bottom: 8cpx;
+  }
+  .cell-button{
+    margin-bottom: 18cpx;
+  }
+  .header{
+    position:relative;
+    height: 360cpx;
+  }
+  .header-bg{
+    position: absolute;
+    top:0;
+    left: 0;
+    right: 0;
+    height: 500cpx;
+    width: 750cpx;
+  }
+  .bg2{
+    top:500cpx;
+  }
+  .bg3{
+    top:1000cpx;
+  }
+  .i-photo{
+    position: absolute;
+    bottom:60cpx;
+    left: 30cpx;
+    height: 130cpx;
+    width: 130cpx;
+    border-radius: 130cpx;
+  }
+  .i-name{
+    position: absolute;
+    bottom:120cpx;
+    left: 190cpx;
+    height: 50cpx;
+    width: 300cpx;
+    font-size: 38cpx;
+    color:#fff;
+  }
+  .b-tlt{
+    position: absolute;
+    bottom: 70cpx;
+    left: 190cpx;
+    height: 40cpx;
+    width: 350cpx;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+  .i-tag{
+    width: 30cpx;
+    height: 30cpx;
+    font-size: 24cpx;
+    padding-top: 2cpx;
+    margin-right: 6cpx;
+    border-radius: 4cpx;
+  }
+  .tag-e{
+    width: 32cpx;
+    height: 32cpx;
+  }
+  .tag-v8{
+    color:#fff;
+    background-color: #b29e75;
+    text-align: center;
+  }
+  .txt-tag{
+    color:#b4a078;
+    flex: 1;
+    height: 40cpx;
+    font-size: 28cpx;
+    overflow: hidden;
+    lines:1;
+    text-overflow: ellipsis;
+  }
+  .s-box{
+    position:relative;
+    padding: 0 26cpx;
+    background-color: #fff;
+  }
+  .box-tlt{
+    height: 94cpx;
+  }
+  .box-txt{
+    display: block;
+    font-size: 26cpx;
+    padding-top: 34cpx;
+    color:#333;
+  }
+  .box-line{
+    box-sizing: border-box;
+    height: 132cpx;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .i-box-l{
+    width: 130cpx;
+    height: 132cpx;
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+  }
+  .i-box-tlt{
+    font-size: 26cpx;
+    text-align: center;
+    color:#666;
+  }
+  .line-serve{
+    height: 150cpx;
+  }
+  .border-bottom{
+    border-bottom-style: solid;
+    border-bottom-width: 1cpx;
+    border-bottom-color: rgba(0,0,0,.15) ;
+  }
+  .box-member{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  .item-member{
+    flex: 1;
+  }
+
+</style>
+<script cml-type="json">
+  {
+    "base": {
+      "usingComponents": { },
+      "navigationBarTitleText": "我的",
+      "backgroundTextStyle": "dark",
+      "backgroundColor": "#E2E2E2"
+    }
+  }
+</script>

@@ -1,0 +1,71 @@
+<template>
+  <view class="search-input">
+    <input placeholder='请输入你的用户名' focus="{{isfocus}}" c-bind:input="inputEvent"></input>
+  </view>
+</template>
+
+<script>
+import cml from "chameleon-api";
+
+class Cinput {
+  
+  data = {
+    isfocus:true
+  }
+
+  computed = {
+  }
+
+  watch  = {
+  }
+
+  methods = {
+    inputEvent(e){
+      console.log('input')
+    }
+  }
+
+  beforeCreate() {
+  }
+
+  created() {
+  }
+
+  beforeMount() {
+  }
+
+  mounted() {
+  }
+
+  beforeDestroy() {
+  }
+
+  destroyed() {
+  }
+}
+
+export default new Cinput();
+</script>
+<style>
+.search-input {
+    flex: 1;
+    height: 70cpx;
+    font-size: 26cpx;
+    line-height: 70cpx;
+    background-color: #ededed;
+    border-radius: 8cpx;
+    margin-top: 26cpx;
+    margin-right: 26cpx;
+    margin-left: 26cpx;
+    text-align: center;
+    color:#666;
+  }  
+</style>
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+    }
+  }
+}
+</script>

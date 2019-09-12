@@ -1,0 +1,66 @@
+<template>
+  <view class="carousel" c-bind:touchmove="forbinding">
+    <carousel class="carousel-container" indicator-dots="{{true}}" current="{{1}}" circular="{{true}}"
+              autoplay="{{true}}">
+      <carousel-item
+        c-for="{{bannerImgList}}"
+        c-for-index="i"
+        c-for-item="item"
+        data-idx="{{i}}"
+        c-key="{{i}}"
+      >
+        <image src="{{item.imgUrl}}" class="Img"/>
+      </carousel-item>
+
+    </carousel>
+  </view>
+</template>
+
+<script>
+  import cml from 'chameleon-api';
+  import homeData from '../../assets/json/getHomeImgList.json';
+  class Cswiper {
+    data = {
+      bannerImgList: []
+    }
+    methods = {
+      forbinding(e){
+        console.log(e)
+        e._originEvent.stopPropagation && e._originEvent.stopPropagation()
+      }
+    }
+    created() {
+      // const {bannerImgList} = homeData.data;
+      // this.bannerImgList = bannerImgList;
+      cml.get({
+        url:"/api/getBannerList"
+      }).then(res => {
+        this.bannerImgList = res.list;
+      },err=>{
+        cml.showToast({
+          message: JSON.stringify(err),
+          duration: 2000
+        })
+      })
+      
+    }
+  }
+
+  export default new Cswiper();
+</script>
+<style scoped>
+  .carousel-container {
+    height: 370cpx;
+  }
+  .carousel-carousel-item {
+    width: 750cpx;
+    height: 370cpx;
+  }
+  .Img {
+    width: 750cpx;
+    height: 370cpx;
+  }
+</style>
+<script cml-type="json">
+  { }
+</script>
